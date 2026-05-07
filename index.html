@@ -2,24 +2,52 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>搜索</title>
 <style>
-body{text-align:center;padding-top:100px}
-input{width:350px;padding:12px 20px;border-radius:30px;border:1px solid #ddd}
-button{padding:12px 24px;background:#4285f4;color:white;border:none;border-radius:30px}
+*{box-sizing:border-box}
+body{margin:0;padding-top:100px;text-align:center;font-family:Arial,sans-serif}
+input{
+  width:400px;
+  padding:14px 20px;
+  border:1px solid #ddd;
+  border-radius:24px;
+  font-size:16px;
+  outline:none;
+}
+button{
+  padding:14px 22px;
+  border:none;
+  background:#4285f4;
+  color:white;
+  border-radius:24px;
+  font-size:16px;
+  margin-left:8px;
+  cursor:pointer
+}
+@media(max-width:500px){
+  input{width:90%}
+  button{margin:10px 0 0 0}
+}
 </style>
 </head>
 <body>
-<h1>万能搜索</h1>
-<input id="q" placeholder="输入搜索内容">
-<button onclick="go()">搜索</button>
+
+<h1>谷歌搜索</h1>
+<br>
+<input type="text" id="keyword" placeholder="输入搜索内容...">
+<button onclick="search()">搜索</button>
 
 <script>
-function go(){
-  location.href="/search?q="+encodeURIComponent(document.getElementById("q").value)
+function search(){
+  let k = document.getElementById("keyword").value.trim();
+  if(!k)return;
+  window.open("https://www.google.com/search?q="+encodeURIComponent(k), "_blank");
 }
-document.getElementById("q").onkeydown=e=>e.key=="Enter"&&go()
+document.getElementById("keyword").onkeydown = function(e){
+  if(e.key === "Enter") search();
+}
 </script>
+
 </body>
 </html>
