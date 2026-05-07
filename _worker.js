@@ -1,26 +1,27 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    const upstream = "https://www.google.com";
     
-    // 处理搜索请求，全程走CF代理
-    if (url.pathname === "/search") {
-      const q = url.searchParams.get("q") || "";
-      const targetUrl = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
-      
-      return fetch(targetUrl, {
-        headers: {
-          Host: "www.google.com",
-          "User-Agent": "Mozilla/5.0"
-        }
-      });
-    }
-    
-    // 主页显示谷歌首页（走代理）
-    return fetch("https://www.google.com", {
+    const fetchOpts = {
+      method: request.method,
       headers: {
-        Host: "www.google.com",
-        "User-Agent": "Mozilla/5.0"
-      }
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*",
+      },
+      redirect: "follow",
+    };
+
+    const res = await fetch(upstream + url.pathname + url.search, fetchOpts);
+    
+    let html = await res.text();
+    html = html.replaceAll("https://www.google.com", "");
+    html = html.replaceAll("www.google.com", url.host);
+
+    return new Response(html, {
+      status: res.status,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
     });
   }
 };
