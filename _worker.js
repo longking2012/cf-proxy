@@ -1,39 +1,24 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
-    const q = url.searchParams.get("q") || "";
+    const target = new URL("https://encrypted.google.com" + url.pathname + url.search);
+    
+    const res = await fetch(target, {
+      method: request.method,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,en-US;q=0.7,en;q=0.3",
+        "Host": "encrypted.google.com"
+      }
+    });
 
-    let html = `
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Search</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;padding:60px 20px;text-align:center;font-family:Arial,sans-serif}
-input{
-  width:100%;max-width:480px;
-  padding:14px 22px;
-  border:1px solid #ddd;
-  border-radius:24px;
-  font-size:16px;
-  outline:none;
-}
-form{margin-top:30vh}
-</style>
-</head>
-<body>
-<form action="/">
-  <input type="text" name="q" value="${q}" placeholder="搜索..." autocomplete="off">
-</form>
-${q ? `<p style="margin-top:20px">你搜索的内容：<b>${q}</b></p>` : ""}
-</body>
-</html>
-    `;
+    let html = await res.text();
+    html = html.replaceAll("encrypted.google.com", url.host);
+    html = html.replaceAll("https://encrypted.google.com", "");
 
     return new Response(html, {
+      status: res.status,
       headers: { "Content-Type": "text/html; charset=utf-8" }
     });
   }
