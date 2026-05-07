@@ -3,51 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>搜索</title>
+<title>谷歌代理搜索</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;padding-top:100px;text-align:center;font-family:Arial,sans-serif}
-input{
-  width:400px;
-  padding:14px 20px;
-  border:1px solid #ddd;
-  border-radius:24px;
-  font-size:16px;
-  outline:none;
-}
-button{
-  padding:14px 22px;
-  border:none;
-  background:#4285f4;
-  color:white;
-  border-radius:24px;
-  font-size:16px;
-  margin-left:8px;
-  cursor:pointer
-}
-@media(max-width:500px){
-  input{width:90%}
-  button{margin:10px 0 0 0}
-}
+body{margin:0;padding-top:100px;text-align:center;font-family:Arial}
+input{width:400px;padding:14px 20px;border:1px solid #ddd;border-radius:24px;font-size:16px}
+button{padding:14px 22px;border:none;background:#4285f4;color:white;border-radius:24px;margin-left:8px}
 </style>
 </head>
 <body>
-
-<h1>谷歌搜索</h1>
+<h1>谷歌代理搜索</h1>
 <br>
-<input type="text" id="keyword" placeholder="输入搜索内容...">
+<input id="kw" placeholder="输入内容搜索（全程走代理）">
 <button onclick="search()">搜索</button>
 
 <script>
 function search(){
-  let k = document.getElementById("keyword").value.trim();
-  if(!k)return;
-  window.open("https://www.google.com/search?q="+encodeURIComponent(k), "_blank");
+  let wd = document.getElementById("kw").value;
+  // 跳转到自己的CF代理地址搜索，不走谷歌直连
+  location.href = "/search?q=" + encodeURIComponent(wd);
 }
-document.getElementById("keyword").onkeydown = function(e){
-  if(e.key === "Enter") search();
-}
+document.getElementById("kw").onkeydown = e => e.key=="Enter"&&search();
 </script>
-
 </body>
 </html>
