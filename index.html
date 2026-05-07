@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>搜索</title>
+<style>
+body{text-align:center;padding-top:100px}
+input{width:350px;padding:12px 20px;border-radius:30px;border:1px solid #ddd}
+button{padding:12px 24px;background:#4285f4;color:white;border:none;border-radius:30px}
+</style>
+</head>
+<body>
+<h1>万能搜索</h1>
+<input id="q" placeholder="输入搜索内容">
+<button onclick="go()">搜索</button>
+
+<script>
+function go(){
+  location.href="/search?q="+encodeURIComponent(document.getElementById("q").value)
+}
+document.getElementById("q").onkeydown=e=>e.key=="Enter"&&go()
+</script>
+</body>
+</html>
